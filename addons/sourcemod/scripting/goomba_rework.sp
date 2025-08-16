@@ -278,6 +278,13 @@ stock bool AreValidStompTargets(int iClient, int iVictim)
 			(g_goomba.m_hCvars.BonkedImun.BoolValue && TF2_IsPlayerInCondition(iVictim, TFCond_Bonked)))
 		return false;
 
+  // Friendly Fire
+  ConVar mp_friendlyfire   = FindConVar("mp_friendlyfire");
+  ConVar tf_avoidteammates = FindConVar("tf_avoidteammates");
+  if (GetClientTeam(iClient) == GetClientTeam(iVictim))
+		if (!g_goomba.m_hCvars.FriendlyFire.BoolValue || !mp_friendlyfire.BoolValue || tf_avoidteammates.BoolValue)
+			return false;
+
 	// Cloak checks (for both client and victim)
 	if (g_goomba.m_hCvars.CloakImun.BoolValue &&
 		(TF2_IsPlayerInCondition(iClient, TFCond_Cloaked) || TF2_IsPlayerInCondition(iVictim, TFCond_Cloaked)))
